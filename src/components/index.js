@@ -7,6 +7,8 @@ import Register from "./Register";
 import Login from "./Login";
 import Loader from "./Loader";
 import ProtectedRoute from "./ProtectedRoute";
+import Profile from "./Profile";
+import EditProfile from "./EditProfile";
 
 export {
   Navbar,
@@ -18,4 +20,6 @@ export {
   Login,
   Loader,
   ProtectedRoute,
+  Profile,
+  EditProfile,
 };

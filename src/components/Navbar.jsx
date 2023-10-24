@@ -4,6 +4,7 @@ import { MdOutlineExplore, MdExplore } from "react-icons/md";
 import { RiMessengerLine, RiMessengerFill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
 import { BiLogOutCircle } from "react-icons/bi";
+import { FiPlusCircle } from "react-icons/fi";
 import { Logo } from "./index";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectCurrentUser } from "../features/auth/authSlice";
@@ -60,9 +61,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="min-h-screen w-[72px] xl:w-60 flex border border-r-[1px] border-r-slate-400 py-4 px-2">
+    <div className="min-h-screen w-[72px] xl:w-60 flex border border-r-[2px] border-r-slate-200 py-4 px-2">
       <div className="w-full flex flex-col items-center xl:items-start">
-        <div className="w-full flex items-center justify-center xl:justify-start mt-6 mb-10 pl-3">
+        <div className="w-full flex items-center justify-center xl:justify-start mt-2 mb-10 xl:pl-3">
           <Link to={"/"}>
             <Logo />
           </Link>
@@ -86,8 +87,15 @@ const Navbar = () => {
           </NavLink>
         ))}
 
+        <button className="w-full flex gap-5 items-center p-3 mb-2 hover:bg-slate-100 rounded">
+          <div className="text-[28px]">
+            <FiPlusCircle />
+          </div>
+          <div className="hidden xl:block">Create</div>
+        </button>
+
         <NavLink
-          to={"/:username"}
+          to={`/${user.username}`}
           className="w-full p-3 mb-2 hover:bg-slate-100 rounded">
           {({ isActive }) => (
             <div className="flex gap-5 items-center ">

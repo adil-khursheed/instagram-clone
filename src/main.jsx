@@ -15,6 +15,7 @@ import SignUpPage from "./pages/SignUpPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import { ProtectedRoute } from "./components/index.js";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import EditProfilePage from "./pages/EditProfilePage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
           {
             path: "/:username",
             element: <ProfilePage />,
+          },
+          {
+            path: "/edit-profile",
+            element: <EditProfilePage />,
           },
         ],
       },
