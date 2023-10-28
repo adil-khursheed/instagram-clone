@@ -1,7 +1,7 @@
-const Logo = () => {
+const Logo = ({ className1 = "", className2 = "" }) => {
   return (
     <>
-      <div className="hidden xl:block">
+      <div className={`${className1}`}>
         <svg
           aria-label="Instagram"
           className=""
@@ -19,7 +19,7 @@ const Logo = () => {
         </svg>
       </div>
 
-      <div className="block xl:hidden">
+      <div className={`${className2}`}>
         <svg
           aria-label="Instagram"
           className=""

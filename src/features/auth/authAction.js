@@ -35,3 +35,25 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+export const getCurrentUser = createAsyncThunk(
+  "auth/current-user",
+  async () => {
+    try {
+      const { data } = await axios.get(
+        `${conf.serverUrl}${conf.authBaseUrl}/current-user`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
+);

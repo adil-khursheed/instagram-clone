@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "./authAction";
+import { getCurrentUser, registerUser } from "./authAction";
 
 const initialState = {
   loading: false,
@@ -18,11 +18,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, accessToken } = action.payload.data;
-      state.user = user;
-      localStorage.setItem("userData", JSON.stringify(user));
-      state.token = accessToken;
-      localStorage.setItem("accessToken", JSON.stringify(accessToken));
+      const { data } = action.payload;
+      state.user = data.user;
+      localStorage.setItem("userData", JSON.stringify(data.user));
+      state.token = data.accessToken;
+      localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
     },
     logout: (state) => {
       state.user = null;
@@ -32,8 +32,8 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // register user
     builder
+      // register user
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
       })
@@ -42,6 +42,20 @@ const authSlice = createSlice({
         state.user = payload;
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.user = null;
+        state.error = payload;
+      })
+
+      // get current user
+      .addCase(getCurrentUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.user = payload.user;
+      })
+      .addCase(getCurrentUser.rejected, (state, { payload }) => {
         state.loading = false;
         state.user = null;
         state.error = payload;

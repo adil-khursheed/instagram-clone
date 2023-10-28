@@ -61,11 +61,11 @@ const Navbar = () => {
   };
 
   return (
-    <div className="min-h-screen w-[72px] xl:w-60 flex border border-r-[2px] border-r-slate-200 py-4 px-2">
-      <div className="w-full flex flex-col items-center xl:items-start">
-        <div className="w-full flex items-center justify-center xl:justify-start mt-2 mb-10 xl:pl-3">
+    <div className="min-h-screen w-[72px] md:w-60 flex border border-r-[2px] border-r-slate-200 py-4 px-2">
+      <div className="w-full flex flex-col items-center md:items-start">
+        <div className="w-full flex items-center justify-center md:justify-start mt-2 mb-10 md:pl-3">
           <Link to={"/"}>
-            <Logo />
+            <Logo className1="hidden md:block" className2="block md:hidden" />
           </Link>
         </div>
         {navItems.map((navItem) => (
@@ -79,7 +79,7 @@ const Navbar = () => {
                   {isActive ? navItem?.iconFill : navItem?.iconOutline}
                 </div>
                 <div
-                  className={`${isActive ? "font-bold" : ""} hidden xl:block`}>
+                  className={`${isActive ? "font-bold" : ""} hidden md:block`}>
                   {navItem.title}
                 </div>
               </div>
@@ -91,7 +91,7 @@ const Navbar = () => {
           <div className="text-[28px]">
             <FiPlusCircle />
           </div>
-          <div className="hidden xl:block">Create</div>
+          <div className="hidden md:block">Create</div>
         </button>
 
         <NavLink
@@ -109,7 +109,7 @@ const Navbar = () => {
                   className="w-full rounded-full"
                 />
               </div>
-              <div className={`hidden xl:block ${isActive ? "font-bold" : ""}`}>
+              <div className={`hidden md:block ${isActive ? "font-bold" : ""}`}>
                 Profile
               </div>
             </div>
@@ -122,7 +122,7 @@ const Navbar = () => {
           <div className="text-[28px]">
             <BiLogOutCircle />
           </div>
-          <div className="hidden xl:block">Logout</div>
+          <div className="hidden md:block">Logout</div>
         </button>
       </div>
     </div>

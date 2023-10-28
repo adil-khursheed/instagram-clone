@@ -33,9 +33,7 @@ const Login = () => {
           <div
             className={`mx-auto w-full max-w-sm bg-transparent rounded-xl p-10 border border-black/10`}>
             <div className="mb-6 flex justify-center">
-              <span className="inline-block w-full text-center">
-                <Logo />
-              </span>
+              <Logo className2="hidden" />
             </div>
 
             <form onSubmit={handleSubmit(loginHandler)}>
