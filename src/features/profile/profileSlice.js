@@ -1,22 +1,32 @@
-import { apiSlice } from "../../app/api/apiSlice";
-import conf from "../../conf/conf";
+import { createSlice } from "@reduxjs/toolkit";
+import { getMyProfile } from "./profileAction";
 
-export const profileApiSlice = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
-    getMyProfile: builder.query({
-      query: () => ({
-        url: `${conf.socialMediaBaseUrl}/profile`,
-      }),
-    }),
-    updateAvatar: builder.mutation({
-      query: (data) => ({
-        url: `${conf.authBaseUrl}/avatar`,
-        method: "PATCH",
-        body: data,
-      }),
-    }),
-  }),
+const initialState = {
+  loading: false,
+  userProfile: null,
+};
+
+const profileSlice = createSlice({
+  name: "profile",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMyProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userProfile = action.payload.data;
+      })
+      .addCase(getMyProfile.rejected, (state) => {
+        state.loading = false;
+        state.userProfile = null;
+      });
+  },
 });
 
-export const { useGetMyProfileQuery, useUpdateAvatarMutation } =
-  profileApiSlice;
+export default profileSlice.reducer;
+
+export const selectCurrentUserProfile = (state) => state.profile.userProfile;
+export const selectUserProfileLoading = (state) => state.profile.loading;

@@ -5,6 +5,11 @@
 @layer base {
   body {
     position: relative;
+    overflow: hidden;
+  }
+
+  .main-height {
+    height: calc(100vh - 135px);
   }
 
   .loader {
@@ -46,5 +51,48 @@
     40% {
       transform: scaleY(1);
     }
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #e2e2e2;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #c9c8c8;
+    border-radius: 50px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #7878a3;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    @apply z-50 flex-between w-full sticky bottom-0 rounded-t-[20px] px-5 py-4 sm:hidden;
+  }
+
+  /* Left sidebar */
+  .leftsidebar {
+    @apply hidden sm:block sm:w-[72px] md:w-60 px-6 py-10;
+  }
+
+  /* Topbar */
+  .topbar {
+    @apply sticky top-0 z-50 sm:hidden w-full;
+  }
+
+  /* Profile */
+  .profile-container {
+    @apply flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar;
+  }
+
+  .profile-inner_container {
+    @apply flex items-center md:mb-8 xl:items-start gap-8 flex-col xl:flex-row relative max-w-5xl w-full;
   }
 }

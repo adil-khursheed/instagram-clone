@@ -4,12 +4,14 @@ import { MdOutlineExplore, MdExplore } from "react-icons/md";
 import { RiMessengerLine, RiMessengerFill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
 import { BiLogOutCircle } from "react-icons/bi";
-import { FiPlusCircle } from "react-icons/fi";
-import { Logo } from "./index";
+import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
+
+import { Logo } from "../index";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectCurrentUser } from "../features/auth/authSlice";
-import { useLogoutMutation } from "../features/auth/authApiSlice";
+import { logout, selectCurrentUser } from "../../features/auth/authSlice";
+import { useLogoutMutation } from "../../features/auth/authApiSlice";
 import { toast } from "react-toastify";
+import { useGetMyProfileQuery } from "../../features/profile/profileApiSlice";
 
 const navItems = [
   {
@@ -40,11 +42,19 @@ const navItems = [
     iconFill: <RiMessengerFill />,
     urlPath: "/messages",
   },
+  {
+    id: 5,
+    title: "Create",
+    iconOutline: <BsPlusCircle />,
+    iconFill: <BsPlusCircleFill />,
+    urlPath: "/create-post",
+  },
 ];
 
-const Navbar = () => {
+const LeftSidebar = () => {
   const user = useSelector(selectCurrentUser);
   const [logoutApiCall] = useLogoutMutation();
+  const { data } = useGetMyProfileQuery();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +71,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="min-h-screen w-[72px] md:w-60 flex border border-r-[2px] border-r-slate-200 py-4 px-2">
+    <nav className="h-screen hidden sm:flex sm:w-[72px] md:w-60 border-r-[2px] border-r-slate-200 py-4 px-2">
       <div className="w-full flex flex-col items-center md:items-start">
         <div className="w-full flex items-center justify-center md:justify-start mt-2 mb-10 md:pl-3">
           <Link to={"/"}>
@@ -75,7 +85,10 @@ const Navbar = () => {
             className=" w-full hover:bg-slate-100 p-3 mb-2 rounded">
             {({ isActive }) => (
               <div className="flex items-center gap-5 ">
-                <div className="text-[28px]">
+                <div
+                  className={`${
+                    navItem.title === "Create" ? "text-[25px]" : "text-[28px]"
+                  }`}>
                   {isActive ? navItem?.iconFill : navItem?.iconOutline}
                 </div>
                 <div
@@ -87,13 +100,6 @@ const Navbar = () => {
           </NavLink>
         ))}
 
-        <button className="w-full flex gap-5 items-center p-3 mb-2 hover:bg-slate-100 rounded">
-          <div className="text-[28px]">
-            <FiPlusCircle />
-          </div>
-          <div className="hidden md:block">Create</div>
-        </button>
-
         <NavLink
           to={`/${user.username}`}
           className="w-full p-3 mb-2 hover:bg-slate-100 rounded">
@@ -104,7 +110,7 @@ const Navbar = () => {
                   isActive ? "border-2 border-black rounded-full" : ""
                 } w-7 h-7 flex items-center justify-center rounded-full p-[2px]`}>
                 <img
-                  src={user.avatar.url}
+                  src={data?.data?.account.avatar.url}
                   alt="profile"
                   className="w-full rounded-full"
                 />
@@ -125,8 +131,8 @@ const Navbar = () => {
           <div className="hidden md:block">Logout</div>
         </button>
       </div>
-    </div>
+    </nav>
   );
 };
 
-export default Navbar;
+export default LeftSidebar;

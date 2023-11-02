@@ -5,17 +5,23 @@ import "./index.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/HomePage.jsx";
-import SearchPage from "./pages/SearchPage.jsx";
-import ExplorePage from "./pages/ExplorePage.jsx";
-import MessagesPage from "./pages/MessagesPage.jsx";
 import { Provider } from "react-redux";
 import store from "./app/store/store.js";
-import SignUpPage from "./pages/SignUpPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
+
 import { ProtectedRoute } from "./components/index.js";
-import ProfilePage from "./pages/ProfilePage.jsx";
-import EditProfilePage from "./pages/EditProfilePage.jsx";
+
+import {
+  LoginPage,
+  SignUpPage,
+  HomePage,
+  SearchPage,
+  ExplorePage,
+  MessagesPage,
+  ProfilePage,
+  EditProfilePage,
+  NotificationsPage,
+  CreatePost,
+} from "./pages/index.js";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +62,14 @@ const router = createBrowserRouter([
           {
             path: "/edit-profile",
             element: <EditProfilePage />,
+          },
+          {
+            path: "/notifications",
+            element: <NotificationsPage />,
+          },
+          {
+            path: "/create-post",
+            element: <CreatePost />,
           },
         ],
       },

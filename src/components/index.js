@@ -1,4 +1,6 @@
-import Navbar from "./Navbar";
+import LeftSidebar from "./shared/LeftSidebar";
+import Topbar from "./shared/Topbar";
+import Bottombar from "./shared/Bottombar";
 import PostCard from "./PostCard";
 import Input from "./Input";
 import Button from "./Button";
@@ -9,9 +11,12 @@ import Loader from "./Loader";
 import ProtectedRoute from "./ProtectedRoute";
 import Profile from "./Profile";
 import EditProfile from "./EditProfile";
+import EditAvatar from "./EditAvatar";
 
 export {
-  Navbar,
+  Topbar,
+  LeftSidebar,
+  Bottombar,
   PostCard,
   Input,
   Button,
@@ -22,4 +27,5 @@ export {
   ProtectedRoute,
   Profile,
   EditProfile,
+  EditAvatar,
 };

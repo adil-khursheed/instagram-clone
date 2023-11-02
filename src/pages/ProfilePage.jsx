@@ -2,7 +2,7 @@ import { Profile } from "../components/index";
 
 const ProfilePage = () => {
   return (
-    <div>
+    <div className="w-full">
       <Profile />
     </div>
   );
