@@ -7,7 +7,7 @@ import LoginPage from "./LoginPage";
 import ProfilePage from "./ProfilePage";
 import EditProfilePage from "./EditProfilePage";
 import NotificationsPage from "./NotificationsPage";
-import CreatePost from "./CreatePost";
+import CreatePostPage from "./CreatePostPage";
 
 export {
   HomePage,
@@ -19,5 +19,5 @@ export {
   ProfilePage,
   EditProfilePage,
   NotificationsPage,
-  CreatePost,
+  CreatePostPage,
 };

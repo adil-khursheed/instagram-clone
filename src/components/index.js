@@ -12,6 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Profile from "./Profile";
 import EditProfile from "./EditProfile";
 import EditAvatar from "./EditAvatar";
+import CreatePost from "./CreatePost";
 
 export {
   Topbar,
@@ -28,4 +29,5 @@ export {
   Profile,
   EditProfile,
   EditAvatar,
+  CreatePost,
 };

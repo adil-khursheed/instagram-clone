@@ -43,12 +43,16 @@ const Bottombar = () => {
   const { data } = useGetMyProfileQuery();
 
   return (
-    <section className="w-full sticky bottom-0 p-2 px-4 flex justify-between items-center bg-white shadow-[0_-4px_10px_0_#dddddd;] sm:hidden">
+    <section className="w-full sticky bottom-0 p-2 px-4 flex justify-between items-center bg-white shadow-[0_-2px_10px_0_#dddddd;] sm:hidden">
       {navItems.map((navItem) => (
         <NavLink
           key={navItem.id}
           to={navItem.urlPath}
-          className="hover:bg-slate-100 p-2 rounded">
+          className={({ isActive }) =>
+            isActive
+              ? "bg-slate-300 p-2 rounded"
+              : "hover:bg-slate-100 p-2 rounded"
+          }>
           {({ isActive }) => (
             <div className="flex flex-col items-center">
               <div
@@ -66,7 +70,11 @@ const Bottombar = () => {
       ))}
       <NavLink
         to={`/${user.username}`}
-        className="hover:bg-slate-100 p-2 rounded">
+        className={({ isActive }) =>
+          isActive
+            ? "bg-slate-300 p-2 rounded"
+            : "hover:bg-slate-100 p-2 rounded"
+        }>
         {({ isActive }) => (
           <div className="flex flex-col items-center ">
             <div

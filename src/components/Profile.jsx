@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { Loader } from "./index";
 import { useGetMyPostsQuery } from "../features/posts/postApiSlice";
 import { useEffect, useState } from "react";
-import { ITEMS_PER_PAGE } from "../app/constants/constants";
 import { useGetMyProfileQuery } from "../features/profile/profileApiSlice";
+// import { ITEMS_PER_PAGE } from "../app/constants/constants";
 
 const Profile = () => {
   const [page, setPage] = useState(1);
@@ -15,34 +15,38 @@ const Profile = () => {
     error: postsError,
     isLoading: postsLoading,
     isFetching: postsFetching,
-  } = useGetMyPostsQuery({ page, limit: ITEMS_PER_PAGE });
+  } = useGetMyPostsQuery(page);
 
   useEffect(() => {
+    const mainPage = document.querySelector("main");
+
     const onScroll = () => {
       const scrolledToBottom =
-        window.innerHeight + window.scrollY >= document.body.offsetHeight;
+        window.innerHeight + mainPage.scrollTop >= mainPage.scrollHeight;
 
       if (scrolledToBottom && !postsFetching) {
         console.log("Fetching more data...");
-        setPage(page + 1);
+        setPage((prev) => prev + 1);
       }
     };
 
-    document.addEventListener("scroll", onScroll);
+    mainPage.addEventListener("scroll", onScroll);
 
     return function () {
-      document.removeEventListener("scroll", onScroll);
+      mainPage.removeEventListener("scroll", onScroll);
     };
   }, [page, postsFetching]);
 
   return (
-    <div className="max-w-3xl my-4 sm:my-10 mx-auto px-4 flex flex-col gap-10">
+    <div
+      className="max-w-3xl py-4 sm:py-10 mx-auto px-4 flex flex-col gap-10"
+      id="scroll-page">
       {profileLoading ? (
         <Loader />
       ) : (
         <div className="flex justify-center items-center">
           <div className="w-full flex gap-12 items-center justify-evenly">
-            <div className="sm:w-40 sm:h-40 w-24 h-24 rounded-full">
+            <div className="w-28 h-28 rounded-full sm:w-40 sm:h-40">
               <img
                 src={data?.data?.account.avatar.url}
                 alt="profile-image"

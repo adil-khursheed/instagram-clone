@@ -20,7 +20,7 @@ import {
   ProfilePage,
   EditProfilePage,
   NotificationsPage,
-  CreatePost,
+  CreatePostPage,
 } from "./pages/index.js";
 
 const router = createBrowserRouter([
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/create-post",
-            element: <CreatePost />,
+            element: <CreatePostPage />,
           },
         ],
       },

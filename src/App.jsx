@@ -16,7 +16,7 @@ function App() {
       <div className="relative max-w-[1440px] mx-auto w-full sm:flex">
         <Topbar />
         <LeftSidebar />
-        <main className="w-full main-height overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <main className="w-full main-height sm:h-screen overflow-y-auto overflow-x-hidden custom-scrollbar">
           <Outlet />
         </main>
         <Bottombar />

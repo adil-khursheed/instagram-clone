@@ -4,8 +4,8 @@ import conf from "../../conf/conf";
 export const postsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMyPosts: builder.query({
-      query: (queryParams) => ({
-        url: `${conf.socialMediaBaseUrl}/posts/get/my?${queryParams}`,
+      query: (page) => ({
+        url: `${conf.socialMediaBaseUrl}/posts/get/my?page=${page}&limit=10`,
       }),
       serializeQueryArgs: ({ queryArgs }) => {
         const newQueryArgs = { ...queryArgs };
@@ -23,6 +23,9 @@ export const postsApiSlice = apiSlice.injectEndpoints({
           };
         }
         return newItems;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
       },
     }),
   }),
