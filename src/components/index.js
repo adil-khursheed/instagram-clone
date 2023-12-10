@@ -1,6 +1,7 @@
 import LeftSidebar from "./shared/LeftSidebar";
 import Topbar from "./shared/Topbar";
 import Bottombar from "./shared/Bottombar";
+import PostForm from "./forms/PostForm";
 import PostCard from "./PostCard";
 import Input from "./Input";
 import Button from "./Button";
@@ -13,11 +14,13 @@ import Profile from "./Profile";
 import EditProfile from "./EditProfile";
 import EditAvatar from "./EditAvatar";
 import CreatePost from "./CreatePost";
+import FileUploader from "./FileUploader";
 
 export {
   Topbar,
   LeftSidebar,
   Bottombar,
+  PostForm,
   PostCard,
   Input,
   Button,
@@ -30,4 +33,5 @@ export {
   EditProfile,
   EditAvatar,
   CreatePost,
+  FileUploader,
 };
