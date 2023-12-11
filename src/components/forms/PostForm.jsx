@@ -41,7 +41,7 @@ const PostForm = ({ post }) => {
         const updatedPost = await updatePostApi(post._id, ...formData).unwrap();
 
         if (updatedPost) {
-          navigate(`post/${post._id}`);
+          navigate(`/posts/${post._id}`);
           toast.success("Post updated successfully!");
         }
       } else {

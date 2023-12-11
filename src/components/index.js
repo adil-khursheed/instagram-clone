@@ -15,6 +15,7 @@ import EditProfile from "./EditProfile";
 import EditAvatar from "./EditAvatar";
 import CreatePost from "./CreatePost";
 import FileUploader from "./FileUploader";
+import PostStats from "./PostStats";
 
 export {
   Topbar,
@@ -22,6 +23,7 @@ export {
   Bottombar,
   PostForm,
   PostCard,
+  PostStats,
   Input,
   Button,
   Logo,

@@ -8,6 +8,8 @@ import ProfilePage from "./ProfilePage";
 import EditProfilePage from "./EditProfilePage";
 import NotificationsPage from "./NotificationsPage";
 import CreatePostPage from "./CreatePostPage";
+import PostDetailsPage from "./PostDetailsPage";
+import EditPostPage from "./EditPostPage";
 
 export {
   HomePage,
@@ -20,4 +22,6 @@ export {
   EditProfilePage,
   NotificationsPage,
   CreatePostPage,
+  PostDetailsPage,
+  EditPostPage,
 };
