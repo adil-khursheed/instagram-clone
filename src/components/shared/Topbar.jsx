@@ -24,7 +24,7 @@ const Topbar = () => {
     }
   };
   return (
-    <header className="sm:hidden w-full sticky top-0 bg-white shadow-md p-4 flex justify-between items-center">
+    <header className="sm:hidden w-full sticky top-0 bg-white border-b-[1px] p-4 flex justify-between items-center">
       <div>
         <Link to={"/"}>
           <Logo className2="hidden" />

@@ -112,7 +112,7 @@ const LeftSidebar = () => {
                 <img
                   src={data?.data?.account.avatar.url}
                   alt="profile"
-                  className="w-full rounded-full"
+                  className="w-full h-full rounded-full object-cover object-top"
                 />
               </div>
               <div className={`hidden md:block ${isActive ? "font-bold" : ""}`}>

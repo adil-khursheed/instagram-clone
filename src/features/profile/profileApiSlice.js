@@ -9,6 +9,12 @@ export const profileApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Profile"],
     }),
+    getProfileByUsername: builder.query({
+      query: (username) => ({
+        url: `${conf.socialMediaBaseUrl}/profile/u/${username}`,
+      }),
+      providesTags: ["Profile"],
+    }),
     updateAvatar: builder.mutation({
       query: (data) => ({
         url: `${conf.authBaseUrl}/avatar`,
@@ -30,6 +36,7 @@ export const profileApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetMyProfileQuery,
+  useGetProfileByUsernameQuery,
   useUpdateAvatarMutation,
   useUpdateProfileMutation,
 } = profileApiSlice;

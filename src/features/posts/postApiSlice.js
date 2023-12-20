@@ -3,76 +3,69 @@ import conf from "../../conf/conf";
 
 export const postsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getMyPosts: builder.query({
-      query: (page) => ({
-        url: `${conf.socialMediaBaseUrl}/posts/get/my?page=${page}&limit=10`,
-      }),
-      serializeQueryArgs: ({ queryArgs }) => {
-        const newQueryArgs = { ...queryArgs };
-        if (newQueryArgs.page) {
-          delete newQueryArgs.page;
-        }
-        return newQueryArgs;
-      },
-      merge: (currentCache, newItems) => {
-        if (currentCache.results) {
-          return {
-            ...currentCache,
-            ...newItems,
-            results: [...currentCache.results, ...newItems.results],
-          };
-        }
-        return newItems;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
-      },
-    }),
     getAllPosts: builder.query({
       query: (page) => ({
         url: `${conf.socialMediaBaseUrl}/posts?page=${page}&limit=10`,
       }),
-      serializeQueryArgs: ({ queryArgs }) => {
-        const newQueryArgs = { ...queryArgs };
-        if (newQueryArgs.page) {
-          delete newQueryArgs.page;
-        }
-        return newQueryArgs;
+      providesTags: ["Post"],
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
       },
       merge: (currentCache, newItems) => {
-        if (currentCache.results) {
-          return {
-            ...currentCache,
-            ...newItems,
-            results: [...currentCache.results, ...newItems.results],
-          };
-        }
-        return newItems;
+        console.log(currentCache);
+        console.log(newItems);
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
       },
     }),
+
+    getMyPosts: builder.query({
+      query: (page) => ({
+        url: `${conf.socialMediaBaseUrl}/posts/get/my?page=${page}&limit=10`,
+      }),
+      providesTags: ["Post"],
+    }),
+
+    getPostsByUsername: builder.query({
+      query: ({ username, page }) => ({
+        url: `${conf.socialMediaBaseUrl}/posts/get/u/${username}?page=${page}&limit=10`,
+      }),
+      providesTags: ["Post"],
+    }),
+
+    getPostById: builder.query({
+      query: (postId) => ({
+        url: `${conf.socialMediaBaseUrl}/posts/${postId}`,
+      }),
+      providesTags: ["Post"],
+    }),
+
     createPost: builder.mutation({
       query: (data) => ({
         url: `${conf.socialMediaBaseUrl}/posts`,
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Post"],
     }),
+
     updatePost: builder.mutation({
-      query: (postId, data) => ({
+      query: ({ postId, ...data }) => ({
         url: `${conf.socialMediaBaseUrl}/posts/${postId}`,
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ["Post"],
     }),
   }),
 });
 
 export const {
-  useGetMyPostsQuery,
   useGetAllPostsQuery,
+  useGetMyPostsQuery,
+  useGetPostsByUsernameQuery,
+  useGetPostByIdQuery,
   useCreatePostMutation,
   useUpdatePostMutation,
 } = postsApiSlice;

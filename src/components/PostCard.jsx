@@ -6,13 +6,10 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 
 const PostCard = ({ post }) => {
-  console.log(post);
-
   const user = useSelector(selectCurrentUser);
-  console.log(user);
 
   return (
-    <div className="max-w-screen-sm w-full p-5 lg:p-7 border border-gray-200 rounded-3xl">
+    <div className="max-w-screen-sm w-full sm:p-5 lg:p-7 sm:border border-gray-200 rounded-3xl">
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-3">
           <Link to={`/${post?.author.account.username}`}>
@@ -53,7 +50,7 @@ const PostCard = ({ post }) => {
         ))}
       </Link>
 
-      <PostStats post={post} userId={user._id} />
+      <PostStats post={post} userId={post?.author.account._id} />
 
       <div className="flex flex-col">
         <div className="flex items-center gap-3">
@@ -64,15 +61,17 @@ const PostCard = ({ post }) => {
           </Link>
           <p>{post?.content}</p>
         </div>
-        <ul className="flex gap-1 mt-2">
-          {post?.tags.map((tag, index) => (
-            <li
-              key={`${tag}${index}`}
-              className="text-blue-500 text-[14px] font-normal leading-[140%]">
-              #{tag}
-            </li>
-          ))}
-        </ul>
+        {post.tags.length > 0 ? (
+          <ul className="flex gap-2 whitespace-nowrap">
+            {post?.tags.map((tag, index) => (
+              <li
+                key={`${tag}${index}`}
+                className="text-blue-500 text-[14px] font-normal leading-[140%] cursor-pointer">
+                #{tag}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </div>
   );

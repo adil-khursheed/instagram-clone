@@ -5,17 +5,19 @@ import {
   useCreatePostMutation,
   useUpdatePostMutation,
 } from "../../features/posts/postApiSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PostForm = ({ post }) => {
   const { register, handleSubmit, control } = useForm({
     defaultValues: {
       content: post?.content || "",
-      images: [],
+      images: post?.images[0].url || [],
       tags: post?.tags.join(",") || "",
     },
   });
+
+  const { postId } = useParams();
 
   const [updatePostApi, { isLoading: updatePostLoading }] =
     useUpdatePostMutation();
@@ -25,7 +27,6 @@ const PostForm = ({ post }) => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log(data);
     const tags = data.tags?.replace(/ /g, "").split(",") || [];
 
     const formData = new FormData();
@@ -38,10 +39,13 @@ const PostForm = ({ post }) => {
 
     try {
       if (post) {
-        const updatedPost = await updatePostApi(post._id, ...formData).unwrap();
+        const updatedPost = await updatePostApi({
+          postId,
+          ...formData,
+        }).unwrap();
 
         if (updatedPost) {
-          navigate(`/posts/${post._id}`);
+          navigate(`/posts/${postId}`);
           toast.success("Post updated successfully!");
         }
       } else {
@@ -74,14 +78,14 @@ const PostForm = ({ post }) => {
           {...register("content", { required: true })}></textarea>
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="add-photos">Add Photos</label>
+        <label>Add Photos</label>
         <Controller
           name="images"
           control={control}
           render={({ field }) => (
             <FileUploader
               fieldChange={field.onChange}
-              mediaUrl={post?.images.url}
+              mediaUrl={post?.images[0].url}
             />
           )}
         />

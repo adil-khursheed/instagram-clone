@@ -1,14 +1,28 @@
-import { Link } from "react-router-dom";
-import { Loader } from "./index";
-import { useGetMyPostsQuery } from "../features/posts/postApiSlice";
+import { Link, useParams } from "react-router-dom";
+import { Button, Loader } from "./index";
+import {
+  useGetMyPostsQuery,
+  useGetPostsByUsernameQuery,
+} from "../features/posts/postApiSlice";
 import { useEffect, useState } from "react";
-import { useGetMyProfileQuery } from "../features/profile/profileApiSlice";
+import {
+  useGetMyProfileQuery,
+  useGetProfileByUsernameQuery,
+} from "../features/profile/profileApiSlice";
+// import { dateStringToNumber } from "../lib/utils";
 // import { ITEMS_PER_PAGE } from "../app/constants/constants";
 
 const Profile = () => {
   const [page, setPage] = useState(1);
 
+  const { username } = useParams();
+
   const { data, isLoading: profileLoading } = useGetMyProfileQuery();
+
+  const { data: userProfileData, isLoading: userProfileLoading } =
+    useGetProfileByUsernameQuery(username);
+
+  const currentUserProfile = data?.data.owner === userProfileData?.data.owner;
 
   const {
     data: myPosts,
@@ -17,15 +31,20 @@ const Profile = () => {
     isFetching: postsFetching,
   } = useGetMyPostsQuery(page);
 
+  const {
+    data: userPostsData,
+    isLoading: userPostsLoading,
+    error: userPostsError,
+  } = useGetPostsByUsernameQuery({ username, page });
+
   useEffect(() => {
     const mainPage = document.querySelector("main");
 
     const onScroll = () => {
       const scrolledToBottom =
-        window.innerHeight + mainPage.scrollTop >= mainPage.scrollHeight;
+        window.innerHeight + mainPage.scrollTop + 1 >= mainPage.scrollHeight;
 
-      if (scrolledToBottom && !postsFetching) {
-        console.log("Fetching more data...");
+      if (scrolledToBottom && myPosts?.data.hasNextPage) {
         setPage((prev) => prev + 1);
       }
     };
@@ -41,49 +60,128 @@ const Profile = () => {
     <div
       className="max-w-3xl py-4 sm:py-10 mx-auto px-4 flex flex-col gap-10"
       id="scroll-page">
-      {profileLoading ? (
+      {profileLoading || userProfileLoading ? (
         <Loader />
       ) : (
         <div className="flex justify-center items-center">
           <div className="w-full flex gap-12 items-center justify-evenly">
             <div className="w-28 h-28 rounded-full sm:w-40 sm:h-40">
               <img
-                src={data?.data?.account.avatar.url}
+                src={
+                  currentUserProfile
+                    ? data?.data?.account.avatar.url
+                    : userProfileData?.data?.account.avatar.url
+                }
                 alt="profile-image"
                 className="w-full h-full rounded-full object-cover object-top"
               />
             </div>
             <div className="max-w-xs w-full flex flex-col gap-3">
               <div className="flex items-center gap-8">
-                <h3>{data?.data?.account.username}</h3>
-                <Link
-                  to={"/edit-profile"}
-                  className="bg-gray-600 py-1 px-3 rounded-md text-white">
-                  Edit Profile
-                </Link>
+                <h3 className="text-lg font-medium">
+                  {currentUserProfile
+                    ? data?.data?.account.username
+                    : userProfileData?.data?.account.username}
+                </h3>
+                {currentUserProfile ? (
+                  <Link
+                    to={"/edit-profile"}
+                    className="bg-gray-600 py-1 px-3 rounded-md text-white">
+                    Edit Profile
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Button className="text-sm font-semibold">Follow</Button>
+                    <Link
+                      to={"/messages"}
+                      className="bg-gray-600 py-2 px-4 rounded-md text-white text-sm font-semibold">
+                      Message
+                    </Link>
+                  </div>
+                )}
               </div>
               <div className="flex items-center gap-8">
-                <h5>{myPosts?.data?.totalPosts} Posts</h5>
-                <h5>{data?.data?.followersCount} Followers</h5>
-                <h5>{data?.data?.followingCount} Following</h5>
+                <h5>
+                  <span className="font-semibold text-[17px]">
+                    {currentUserProfile
+                      ? myPosts?.data?.totalPosts
+                      : userPostsData?.data?.totalPosts}
+                  </span>{" "}
+                  posts
+                </h5>
+                <h5>
+                  <span className="font-semibold text-[17px]">
+                    {currentUserProfile
+                      ? data?.data?.followersCount
+                      : userProfileData?.data?.followersCount}
+                  </span>{" "}
+                  followers
+                </h5>
+                <h5>
+                  <span className="font-semibold text-[17px]">
+                    {currentUserProfile
+                      ? data?.data?.followingCount
+                      : userProfileData?.data?.followingCount}
+                  </span>{" "}
+                  following
+                </h5>
               </div>
-              <h4>
-                {data?.data?.firstName} {data?.data?.lastName}
+              <h4 className="font-medium">
+                {currentUserProfile
+                  ? data?.data?.firstName
+                  : userProfileData?.data?.firstName}{" "}
+                {currentUserProfile
+                  ? data?.data?.lastName
+                  : userProfileData?.data?.lastName}
               </h4>
-              <h4>{data?.data?.bio}</h4>
+              <h4 className="text-sm">
+                {currentUserProfile
+                  ? data?.data?.bio
+                  : userProfileData?.data?.bio}
+              </h4>
             </div>
           </div>
         </div>
       )}
 
       <hr className="border-t-2 border-gray-300" />
-      {postsError ? (
+
+      {postsError || userPostsError ? (
         <h3>Something went wrong with posts!</h3>
-      ) : postsLoading ? (
+      ) : postsLoading || userPostsLoading ? (
         <Loader />
-      ) : myPosts ? (
+      ) : currentUserProfile ? (
+        myPosts ? (
+          <div className="w-full">
+            {myPosts?.data?.posts.length <= 0 ? (
+              <div className="w-full h-40 flex justify-center items-center">
+                <h2 className="font-semibold text-gray-300 text-2xl">
+                  No Posts Yet
+                </h2>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-3 gap-1">
+                  {myPosts?.data?.posts.map((post) => (
+                    <button
+                      key={post._id}
+                      className="max-w-[250px] max-h-[250px] w-full h-full">
+                      <img
+                        src={post.images[0].url}
+                        alt={post.content}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+                {postsFetching && <Loader />}
+              </>
+            )}
+          </div>
+        ) : null
+      ) : userPostsData ? (
         <div className="w-full">
-          {myPosts?.data?.posts.length <= 0 ? (
+          {userPostsData?.data?.posts.length <= 0 ? (
             <div className="w-full h-40 flex justify-center items-center">
               <h2 className="font-semibold text-gray-300 text-2xl">
                 No Posts Yet
@@ -92,7 +190,7 @@ const Profile = () => {
           ) : (
             <>
               <div className="grid grid-cols-3 gap-1">
-                {myPosts?.data?.posts.map((post) => (
+                {userPostsData?.data?.posts.map((post) => (
                   <button
                     key={post._id}
                     className="max-w-[250px] max-h-[250px] w-full h-full">

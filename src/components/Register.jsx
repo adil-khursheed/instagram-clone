@@ -29,9 +29,7 @@ const Register = () => {
           <div
             className={`mx-auto w-full max-w-sm bg-transparent rounded-xl p-10 border border-black/10`}>
             <div className="mb-4 flex justify-center">
-              <span className="inline-block w-full text-center">
-                <Logo />
-              </span>
+              <Logo className2="hidden" />
             </div>
             <h3 className="text-center mb-6 text-lg leading-tight">
               Sign up to see photos and videos from your friends.

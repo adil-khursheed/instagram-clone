@@ -43,7 +43,7 @@ const Bottombar = () => {
   const { data } = useGetMyProfileQuery();
 
   return (
-    <section className="w-full sticky bottom-0 p-2 px-4 flex justify-between items-center bg-white shadow-[0_-2px_10px_0_#dddddd;] sm:hidden">
+    <section className="w-full sticky bottom-0 p-2 px-4 flex justify-between items-center bg-white border-t-[1px] sm:hidden">
       {navItems.map((navItem) => (
         <NavLink
           key={navItem.id}
@@ -84,7 +84,7 @@ const Bottombar = () => {
               <img
                 src={data?.data?.account.avatar.url}
                 alt="profile"
-                className="w-full rounded-full"
+                className="w-full h-full rounded-full object-cover object-top"
               />
             </div>
             <div className={` ${isActive ? "font-bold" : ""} text-sm`}>

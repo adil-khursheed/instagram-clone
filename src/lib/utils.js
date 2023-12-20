@@ -42,3 +42,10 @@ export const multiFormatDateString = (timestamp) => {
       return "Just now";
   }
 };
+
+export function dateStringToNumber(dateString) {
+  const dateObject = new Date(dateString);
+  const timestamp = dateObject.getTime();
+
+  return timestamp;
+}
