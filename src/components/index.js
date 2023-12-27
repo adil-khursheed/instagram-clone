@@ -2,6 +2,7 @@ import LeftSidebar from "./shared/LeftSidebar";
 import Topbar from "./shared/Topbar";
 import Bottombar from "./shared/Bottombar";
 import PostForm from "./forms/PostForm";
+import CommentForm from "./forms/CommentForm";
 import PostCard from "./PostCard";
 import Input from "./Input";
 import Button from "./Button";
@@ -16,12 +17,14 @@ import EditAvatar from "./EditAvatar";
 import CreatePost from "./CreatePost";
 import FileUploader from "./FileUploader";
 import PostStats from "./PostStats";
+import Comments from "./Comments";
 
 export {
   Topbar,
   LeftSidebar,
   Bottombar,
   PostForm,
+  CommentForm,
   PostCard,
   PostStats,
   Input,
@@ -36,4 +39,5 @@ export {
   EditAvatar,
   CreatePost,
   FileUploader,
+  Comments,
 };

@@ -38,6 +38,7 @@ const Register = () => {
             <form onSubmit={handleSubmit(signup)}>
               <div className="space-y-5">
                 <Input
+                  className="px-3 py-2"
                   placeholder="Email address"
                   type="email"
                   {...register("email", {
@@ -51,12 +52,14 @@ const Register = () => {
                   })}
                 />
                 <Input
+                  className="px-3 py-2"
                   placeholder="Username"
                   {...register("username", {
                     required: true,
                   })}
                 />
                 <Input
+                  className="px-3 py-2"
                   type="password"
                   placeholder="Password"
                   {...register("password", {

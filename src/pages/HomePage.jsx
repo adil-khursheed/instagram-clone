@@ -44,7 +44,7 @@ const HomePage = () => {
         posts.map((post) => (
           <div key={post._id}>
             <PostCard post={post} />
-            <hr />
+            <hr className="mt-4 sm:hidden" />
           </div>
         ))
       ) : (

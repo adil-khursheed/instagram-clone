@@ -51,12 +51,27 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
 
     updatePost: builder.mutation({
-      query: ({ postId, ...data }) => ({
+      query: (postId, ...data) => ({
         url: `${conf.socialMediaBaseUrl}/posts/${postId}`,
         method: "PATCH",
         body: data,
       }),
       invalidatesTags: ["Post"],
+    }),
+
+    likeUnlikePost: builder.mutation({
+      query: (postId, data) => ({
+        url: `${conf.socialMediaBaseUrl}/like/post/${postId}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    bookmarkUnbookmarkPost: builder.mutation({
+      query: (postId) => ({
+        url: `${conf.socialMediaBaseUrl}/bookmarks/${postId}`,
+        method: "POST",
+      }),
     }),
   }),
 });
@@ -68,4 +83,6 @@ export const {
   useGetPostByIdQuery,
   useCreatePostMutation,
   useUpdatePostMutation,
+  useLikeUnlikePostMutation,
+  useBookmarkUnbookmarkPostMutation,
 } = postsApiSlice;

@@ -5,7 +5,7 @@ import {
   useCreatePostMutation,
   useUpdatePostMutation,
 } from "../../features/posts/postApiSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PostForm = ({ post }) => {
@@ -16,8 +16,6 @@ const PostForm = ({ post }) => {
       tags: post?.tags.join(",") || "",
     },
   });
-
-  const { postId } = useParams();
 
   const [updatePostApi, { isLoading: updatePostLoading }] =
     useUpdatePostMutation();
@@ -39,10 +37,7 @@ const PostForm = ({ post }) => {
 
     try {
       if (post) {
-        const updatedPost = await updatePostApi({
-          postId,
-          ...formData,
-        }).unwrap();
+        const updatedPost = await updatePostApi(post?._id, formData).unwrap();
 
         if (updatedPost) {
           navigate(`/posts/${postId}`);

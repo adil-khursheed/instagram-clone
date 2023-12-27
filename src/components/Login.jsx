@@ -16,7 +16,6 @@ const Login = () => {
   const loginHandler = async (data) => {
     try {
       const userData = await login(data).unwrap();
-      console.log(userData);
       dispatch(setCredentials({ ...userData }, data.email));
       navigate("/");
       toast.success(userData.message);
@@ -31,7 +30,7 @@ const Login = () => {
       ) : (
         <div className="flex flex-col items-center justify-center">
           <div
-            className={`mx-auto w-full max-w-sm bg-transparent rounded-xl p-10 border border-black/10`}>
+            className={`mx-auto w-full max-w-lg bg-transparent rounded-xl p-5 border border-black/10`}>
             <div className="mb-6 flex justify-center">
               <Logo className2="hidden" />
             </div>
@@ -39,6 +38,7 @@ const Login = () => {
             <form onSubmit={handleSubmit(loginHandler)}>
               <div className="space-y-5">
                 <Input
+                  className="px-3 py-2"
                   placeholder="Email address"
                   type="email"
                   {...register("email", {
@@ -53,6 +53,7 @@ const Login = () => {
                 />
                 <Input
                   type="password"
+                  className="px-3 py-2"
                   placeholder="Password"
                   {...register("password", {
                     required: true,

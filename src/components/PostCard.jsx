@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
-import { PostStats } from "./index";
+import { PostStats, CommentForm } from "./index";
 import { multiFormatDateString } from "../lib/utils";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
@@ -9,7 +9,7 @@ const PostCard = ({ post }) => {
   const user = useSelector(selectCurrentUser);
 
   return (
-    <div className="max-w-screen-sm w-full sm:p-5 lg:p-7 sm:border border-gray-200 rounded-3xl">
+    <div className="max-w-screen-sm mx-auto w-full sm:p-5 lg:p-7 sm:border border-gray-200 rounded-3xl">
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-3">
           <Link to={`/${post?.author.account.username}`}>
@@ -73,6 +73,18 @@ const PostCard = ({ post }) => {
           </ul>
         ) : null}
       </div>
+
+      {post?.comments > 0 && (
+        <div className="mt-1 text-slate-500 text-[15px]">
+          <Link to={`/posts/${post._id}`}>
+            {post?.comments === 1
+              ? `View 1 comment`
+              : `View all ${post?.comments} comments`}
+          </Link>
+        </div>
+      )}
+
+      <CommentForm post={post} buttonHidden="hidden" />
     </div>
   );
 };
