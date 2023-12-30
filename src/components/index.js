@@ -18,6 +18,7 @@ import CreatePost from "./CreatePost";
 import FileUploader from "./FileUploader";
 import PostStats from "./PostStats";
 import Comments from "./Comments";
+import FollowStatsModal from "./FollowStatsModal";
 
 export {
   Topbar,
@@ -40,4 +41,5 @@ export {
   CreatePost,
   FileUploader,
   Comments,
+  FollowStatsModal,
 };

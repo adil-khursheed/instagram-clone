@@ -7,6 +7,7 @@ import {
   useLikeUnlikeCommentMutation,
 } from "../features/comments/commentApiSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Comments = ({ comment, user, data }) => {
   const [isCommentLiked, setIsCommentLiked] = useState(comment.isLiked);
@@ -38,16 +39,22 @@ const Comments = ({ comment, user, data }) => {
   return (
     <div className="flex items-start gap-3 p-3">
       <div className="w-8 h-8 rounded-full">
-        <img
-          src={comment.author.account.avatar.url}
-          alt=""
-          className="w-full h-full object-cover object-top rounded-full"
-        />
+        <Link to={`/${comment.author.account.username}`}>
+          <img
+            src={comment.author.account.avatar.url}
+            alt=""
+            className="w-full h-full object-cover object-top rounded-full"
+          />
+        </Link>
       </div>
       <div className="w-full">
         <div className="flex items-start justify-between w-full">
           <div className="flex items-center gap-2 text-sm">
-            <h3 className="font-semibold">{comment.author.account.username}</h3>
+            <Link to={`/${comment.author.account.username}`}>
+              <h3 className="font-semibold">
+                {comment.author.account.username}
+              </h3>
+            </Link>
             <p>{comment.content}</p>
           </div>
           <div className="mt-[6px] flex items-center gap-2 text-sm">

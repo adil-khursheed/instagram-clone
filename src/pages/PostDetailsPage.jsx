@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetPostByIdQuery } from "../features/posts/postApiSlice";
 import { CommentForm, Comments, Loader, PostStats } from "../components/index";
 import { BsThreeDots } from "react-icons/bs";
@@ -7,23 +7,23 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { useGetPostCommentQuery } from "../features/comments/commentApiSlice";
 import { useState } from "react";
+import { useGetMyProfileQuery } from "../features/profile/profileApiSlice";
 
 const PostDetailsPage = () => {
   const [page, setPage] = useState(1);
   const { postId } = useParams();
 
   const user = useSelector(selectCurrentUser);
-  console.log(user);
+
+  const { data: profileData } = useGetMyProfileQuery();
 
   const { data, isLoading, isError } = useGetPostByIdQuery(postId);
-  console.log(data);
 
   const {
     data: commentData,
     isLoading: commentLoading,
     isError: commentError,
   } = useGetPostCommentQuery({ postId, page });
-  console.log(commentData);
 
   if (isError || commentError) {
     return <p>Something went wrong!!</p>;
@@ -45,14 +45,18 @@ const PostDetailsPage = () => {
             <div className="flex justify-between items-center w-full py-2 border-b border-l px-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full">
-                  <img
-                    src={data?.data.author.account.avatar.url}
-                    alt=""
-                    className="w-full h-full object-cover object-top rounded-full"
-                  />
+                  <Link to={`/${data?.data.author.account.username}`}>
+                    <img
+                      src={data?.data.author.account.avatar.url}
+                      alt=""
+                      className="w-full h-full object-cover object-top rounded-full"
+                    />
+                  </Link>
                 </div>
                 <div className="font-semibold flex flex-col">
-                  <h3>{data?.data.author.account.username}</h3>
+                  <Link to={`/${data?.data.author.account.username}`}>
+                    <h3>{data?.data.author.account.username}</h3>
+                  </Link>
                   <p className="text-[12px] leading-[140%] lg:text-[14px] lg:font-normal text-gray-400">
                     {multiFormatDateString(data?.data.createdAt)}
                   </p>
@@ -66,17 +70,21 @@ const PostDetailsPage = () => {
             <div className="flex-1 border-l border-b overflow-y-auto overflow-x-hidden custom-scrollbar">
               <div className="flex items-start gap-3 p-3">
                 <div className="w-8 h-8 rounded-full">
-                  <img
-                    src={data?.data.author.account.avatar.url}
-                    alt=""
-                    className="w-full h-full object-cover object-top rounded-full"
-                  />
+                  <Link to={`/${data?.data.author.account.username}`}>
+                    <img
+                      src={data?.data.author.account.avatar.url}
+                      alt=""
+                      className="w-full h-full object-cover object-top rounded-full"
+                    />
+                  </Link>
                 </div>
                 <div>
                   <div className="flex items-center gap-2 text-sm">
-                    <h3 className="font-semibold">
-                      {data?.data.author.account.username}
-                    </h3>
+                    <Link to={`/${data?.data.author.account.username}`}>
+                      <h3 className="font-semibold">
+                        {data?.data.author.account.username}
+                      </h3>
+                    </Link>
                     <p>{data?.data.content}</p>
                   </div>
                   {data?.data.tags.length > 0 && (
@@ -90,7 +98,7 @@ const PostDetailsPage = () => {
                       ))}
                     </ul>
                   )}
-                  <div className="text-xs text-gray-400 mt-2">
+                  <div className="text-xs text-gray-400 mt-1">
                     <p>{multiFormatDateString(data?.data.createdAt)}</p>
                   </div>
                 </div>
@@ -124,7 +132,7 @@ const PostDetailsPage = () => {
               <div className="flex items-center gap-3 w-full px-3">
                 <div className="w-10 h-10 rounded-full">
                   <img
-                    src={user?.avatar.url}
+                    src={profileData?.data.account.avatar.url}
                     alt=""
                     className="w-full h-full object-cover object-top rounded-full"
                   />

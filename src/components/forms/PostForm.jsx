@@ -37,10 +37,13 @@ const PostForm = ({ post }) => {
 
     try {
       if (post) {
-        const updatedPost = await updatePostApi(post?._id, formData).unwrap();
+        const updatedPost = await updatePostApi({
+          postId: post._id,
+          ...formData,
+        }).unwrap();
 
         if (updatedPost) {
-          navigate(`/posts/${postId}`);
+          navigate(`/posts/${post?._id}`);
           toast.success("Post updated successfully!");
         }
       } else {
@@ -90,7 +93,7 @@ const PostForm = ({ post }) => {
           label='Add Tags (separated by comma " , ")'
           placeholder="Art, Expression, Learn"
           type="text"
-          className="h-12"
+          className="h-12 px-2"
           {...register("tags", { required: true })}
         />
       </div>

@@ -49,11 +49,13 @@ const EditProfile = () => {
             onSubmit={handleSubmit(onProfileSubmit)}>
             <div className="flex gap-4">
               <Input
+                className="px-3 py-2"
                 label={"First Name"}
                 placeholder="First Name"
                 {...register("firstName", { required: true })}
               />
               <Input
+                className="px-3 py-2"
                 label={"Last Name"}
                 placeholder="Last Name"
                 {...register("lastName", { required: true })}

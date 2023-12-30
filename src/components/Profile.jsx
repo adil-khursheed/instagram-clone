@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { Button, Loader } from "./index";
+import { Button, FollowStatsModal, Loader } from "./index";
 import {
   useGetMyPostsQuery,
   useGetPostsByUsernameQuery,
@@ -9,13 +9,22 @@ import {
   useGetMyProfileQuery,
   useGetProfileByUsernameQuery,
 } from "../features/profile/profileApiSlice";
-// import { dateStringToNumber } from "../lib/utils";
-// import { ITEMS_PER_PAGE } from "../app/constants/constants";
+import {
+  useFollowUnfollowUserMutation,
+  useGetFollowersListQuery,
+  useGetFollowingToListQuery,
+} from "../features/follow/followApiSlice";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [page, setPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [action, setAction] = useState("");
+  const [following, setFollowing] = useState(false);
 
   const { username } = useParams();
+
+  const [followUnfollowUserApi] = useFollowUnfollowUserMutation();
 
   const { data, isLoading: profileLoading } = useGetMyProfileQuery();
 
@@ -36,6 +45,43 @@ const Profile = () => {
     isLoading: userPostsLoading,
     error: userPostsError,
   } = useGetPostsByUsernameQuery({ username, page });
+
+  const { data: followersData, isLoading: followersLoading } =
+    useGetFollowersListQuery({ username, page });
+
+  const { data: followingData, isLoading: followingLoading } =
+    useGetFollowingToListQuery({ username, page });
+
+  const followUnfollowUserHandler = async () => {
+    const followUnfollow = await followUnfollowUserApi(
+      userProfileData?.data.account._id
+    );
+
+    if (followUnfollow) {
+      if (followUnfollow?.data.data.following) {
+        setFollowing(true);
+      } else {
+        setFollowing(false);
+      }
+
+      toast.success(followUnfollow?.data.message);
+    }
+  };
+
+  const followersModalHandler = () => {
+    setShowModal(true);
+    setAction("Followers");
+  };
+
+  const followingModalHandler = () => {
+    setShowModal(true);
+    setAction("Following");
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setAction("");
+  };
 
   useEffect(() => {
     const mainPage = document.querySelector("main");
@@ -60,7 +106,10 @@ const Profile = () => {
     <div
       className="max-w-3xl py-4 sm:py-10 mx-auto px-4 flex flex-col gap-10"
       id="scroll-page">
-      {profileLoading || userProfileLoading ? (
+      {profileLoading ||
+      userProfileLoading ||
+      followersLoading ||
+      followingLoading ? (
         <Loader />
       ) : (
         <div className="flex justify-center items-center">
@@ -91,10 +140,16 @@ const Profile = () => {
                   </Link>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Button className="text-sm font-semibold">Follow</Button>
+                    <Button
+                      className={`text-sm font-semibold ${
+                        following && "bg-gray-500"
+                      }`}
+                      onClick={followUnfollowUserHandler}>
+                      {following ? "Following" : "Follow"}
+                    </Button>
                     <Link
                       to={"/messages"}
-                      className="bg-gray-600 py-2 px-4 rounded-md text-white text-sm font-semibold">
+                      className="bg-gray-500 py-2 px-4 rounded-md text-white text-sm font-semibold">
                       Message
                     </Link>
                   </div>
@@ -109,22 +164,26 @@ const Profile = () => {
                   </span>{" "}
                   posts
                 </h5>
-                <h5>
+                <h5 onClick={followersModalHandler} className="cursor-pointer">
                   <span className="font-semibold text-[17px]">
-                    {currentUserProfile
-                      ? data?.data?.followersCount
-                      : userProfileData?.data?.followersCount}
+                    {followersData?.data.totalFollowers}
                   </span>{" "}
                   followers
                 </h5>
-                <h5>
+                <h5 onClick={followingModalHandler} className="cursor-pointer">
                   <span className="font-semibold text-[17px]">
-                    {currentUserProfile
-                      ? data?.data?.followingCount
-                      : userProfileData?.data?.followingCount}
+                    {followingData?.data.totalFollowing}
                   </span>{" "}
                   following
                 </h5>
+                {showModal && (
+                  <FollowStatsModal
+                    action={action}
+                    closeModal={closeModal}
+                    followers={followersData?.data.followers}
+                    followings={followingData?.data.following}
+                  />
+                )}
               </div>
               <h4 className="font-medium">
                 {currentUserProfile

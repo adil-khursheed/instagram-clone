@@ -50,7 +50,9 @@ const EditAvatar = ({ profileData }) => {
           </div>
           <div>
             <h3>{profileData?.data?.account.username}</h3>
-            <label htmlFor="avatar" className="text-sm text-blue-600 underline">
+            <label
+              htmlFor="avatar"
+              className="text-sm text-blue-600 underline cursor-pointer">
               <input
                 type="file"
                 id="avatar"
