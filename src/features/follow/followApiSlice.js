@@ -7,14 +7,14 @@ export const followApiSlice = apiSlice.injectEndpoints({
       query: ({ username, page }) => ({
         url: `${conf.socialMediaBaseUrl}/follow/list/followers/${username}?page=${page}&limit=10`,
       }),
-      providesTags: ["Follow"],
+      providesTags: ["Follow", "Profile"],
     }),
 
     getFollowingToList: builder.query({
       query: ({ username, page }) => ({
         url: `${conf.socialMediaBaseUrl}/follow/list/following/${username}?page=${page}&limit=10`,
       }),
-      providesTags: ["Follow"],
+      providesTags: ["Follow", "Profile"],
     }),
 
     followUnfollowUser: builder.mutation({
@@ -22,7 +22,7 @@ export const followApiSlice = apiSlice.injectEndpoints({
         url: `${conf.socialMediaBaseUrl}/follow/${toBeFollowedUserId}`,
         method: "POST",
       }),
-      invalidatesTags: ["Follow"],
+      invalidatesTags: ["Follow", "Profile"],
     }),
   }),
 });

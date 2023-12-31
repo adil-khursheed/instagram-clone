@@ -20,7 +20,6 @@ const Profile = () => {
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState("");
-  const [following, setFollowing] = useState(false);
 
   const { username } = useParams();
 
@@ -58,12 +57,6 @@ const Profile = () => {
     );
 
     if (followUnfollow) {
-      if (followUnfollow?.data.data.following) {
-        setFollowing(true);
-      } else {
-        setFollowing(false);
-      }
-
       toast.success(followUnfollow?.data.message);
     }
   };
@@ -142,10 +135,12 @@ const Profile = () => {
                   <div className="flex items-center gap-2">
                     <Button
                       className={`text-sm font-semibold ${
-                        following && "bg-gray-500"
+                        userProfileData?.data.isFollowing && "bg-gray-500"
                       }`}
                       onClick={followUnfollowUserHandler}>
-                      {following ? "Following" : "Follow"}
+                      {userProfileData?.data.isFollowing
+                        ? "Following"
+                        : "Follow"}
                     </Button>
                     <Link
                       to={"/messages"}
@@ -182,6 +177,7 @@ const Profile = () => {
                     closeModal={closeModal}
                     followers={followersData?.data.followers}
                     followings={followingData?.data.following}
+                    followUnfollowUserHandler={followUnfollowUserHandler}
                   />
                 )}
               </div>
